@@ -2,8 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'FEA Quiz',
-  description: 'Quiz game'
+  title: 'Quiz Game',
 }
 
 export default function RootLayout({

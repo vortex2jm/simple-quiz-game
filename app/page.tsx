@@ -1,6 +1,4 @@
-"use client"
-
-import QuizGame from "../quiz-game"
+import QuizGame from "../components/quiz-game"
 
 export default function Page() {
   return <QuizGame />
