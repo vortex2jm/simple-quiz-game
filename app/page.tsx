@@ -7,7 +7,6 @@ import { Shuffle, Plus, Play, Trophy, Users } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Player } from "@/types/Player"
 import { Question } from "@/types/Question"
-import { themes } from "@/data/themes"
 import { questions as gameQuestions } from "@/data/questions"
 import { IoReload } from "react-icons/io5";
 
@@ -23,10 +22,38 @@ export default function Page() {
   const [winner, setWinner] = useState<Player | null>(null)
   const [questions, setQuestions] = useState(gameQuestions);
 
-
-  // Data==================================================
-  // const themes = gameThemes;
-  // let questions = gameQuestions;
+  const themes = [
+    {
+      name: "Ciclo Hidrológico e Características da Água",
+      color: "bg-gradient-to-br from-rose-500 to-pink-600",
+      textColor: "text-rose-600",
+      range: [0, 20],
+    },
+    {
+      name: "Bacias Hidrográficas e Hidrografia Brasileira",
+      color: "bg-gradient-to-br from-blue-500 to-indigo-600",
+      textColor: "text-blue-600",
+      range: [21, 40],
+    },
+    {
+      name: "Uso e Gestão da Água",
+      color: "bg-gradient-to-br from-emerald-500 to-green-600",
+      textColor: "text-emerald-600",
+      range: [41, 60],
+    },
+    {
+      name: "Qualidade da Água e Poluição",
+      color: "bg-gradient-to-br from-amber-500 to-orange-600",
+      textColor: "text-amber-600",
+      range: [61, 80],
+    },
+    {
+      name: "Legislação e Política de Recursos Hídricos",
+      color: "bg-gradient-to-br from-purple-500 to-violet-600",
+      textColor: "text-purple-600",
+      range: [81, 100],
+    },
+  ]
 
   // Features==============================================
   const resetGame = () => {
@@ -104,7 +131,7 @@ export default function Page() {
     setShowAnswer(true)
 
     if (currentQuestion && answerIndex === currentQuestion.correct) {
-      
+
       const updatedPlayers = [...players]
       updatedPlayers[currentPlayerIndex].score += 10
       setPlayers(updatedPlayers)
@@ -268,8 +295,8 @@ export default function Page() {
                     <div
                       key={player.id}
                       className={`flex items-center justify-between p-4 rounded-2xl ${player.id === winner.id
-                          ? "bg-gradient-to-r from-yellow-100 to-orange-100 border-2 border-yellow-300"
-                          : "bg-gray-50"
+                        ? "bg-gradient-to-r from-yellow-100 to-orange-100 border-2 border-yellow-300"
+                        : "bg-gray-50"
                         }`}
                     >
                       <div className="flex items-center gap-3">
@@ -437,10 +464,10 @@ export default function Page() {
                           : "outline"
                       }
                       className={`p-6 h-auto text-left justify-start rounded-2xl border-2 text-lg font-medium transition-all duration-300 ${showAnswer && index === currentQuestion.correct
-                          ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white border-green-400"
-                          : showAnswer && selectedAnswer === index
-                            ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-red-400"
-                            : "hover:bg-gray-50 hover:border-indigo-300"
+                        ? "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white border-green-400"
+                        : showAnswer && selectedAnswer === index
+                          ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-red-400"
+                          : "hover:bg-gray-50 hover:border-indigo-300"
                         }`}
                       onClick={() => !showAnswer && selectAnswer(index, currentQuestion.id)}
                       disabled={showAnswer}
@@ -455,8 +482,8 @@ export default function Page() {
                   <div className="text-center space-y-6 pt-4">
                     <div
                       className={`p-6 rounded-2xl text-lg font-semibold ${selectedAnswer === currentQuestion.correct
-                          ? "bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border-2 border-green-300"
-                          : "bg-gradient-to-r from-red-100 to-red-100 text-red-800 border-2 border-red-300"
+                        ? "bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border-2 border-green-300"
+                        : "bg-gradient-to-r from-red-100 to-red-100 text-red-800 border-2 border-red-300"
                         }`}
                     >
                       {selectedAnswer === currentQuestion.correct
