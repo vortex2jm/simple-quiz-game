@@ -7,7 +7,7 @@ import { Shuffle, Plus, Play, Trophy, Users } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Player } from "@/types/Player"
 import { Question } from "@/types/Question"
-import { themes as gameThemes } from "@/data/themes"
+import { themes } from "@/data/themes"
 import { questions as gameQuestions } from "@/data/questions"
 import { IoReload } from "react-icons/io5";
 
@@ -21,10 +21,12 @@ export default function Page() {
   const [showAnswer, setShowAnswer] = useState(false)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [winner, setWinner] = useState<Player | null>(null)
+  const [questions, setQuestions] = useState(gameQuestions);
+
 
   // Data==================================================
-  const themes = gameThemes;
-  const questions = gameQuestions;
+  // const themes = gameThemes;
+  // let questions = gameQuestions;
 
   // Features==============================================
   const resetGame = () => {
@@ -82,6 +84,7 @@ export default function Page() {
 
   // =========================
   const drawQuestion = () => {
+
     const currentPlayer = players[currentPlayerIndex]
     const playerTheme = getPlayerTheme(currentPlayer.score)
     const themeQuestions = questions.filter((q) => q.theme === playerTheme.name)
@@ -95,17 +98,21 @@ export default function Page() {
   }
 
   // ============================================
-  const selectAnswer = (answerIndex: number) => {
+  const selectAnswer = (answerIndex: number, quesitonID: string) => {
+
     setSelectedAnswer(answerIndex)
     setShowAnswer(true)
 
     if (currentQuestion && answerIndex === currentQuestion.correct) {
+      
       const updatedPlayers = [...players]
       updatedPlayers[currentPlayerIndex].score += 10
       setPlayers(updatedPlayers)
 
+      setQuestions(questions.filter(q => q.id != quesitonID));
+
       // Verificar vitória
-      if (updatedPlayers[currentPlayerIndex].score >= 50) {
+      if (updatedPlayers[currentPlayerIndex].score >= 100) {
         setWinner(updatedPlayers[currentPlayerIndex])
       }
     }
@@ -249,7 +256,7 @@ export default function Page() {
               </h1>
               <h2 className="text-3xl font-semibold text-gray-800 mb-4">{winner.name} Venceu!</h2>
               <div className="text-6xl font-bold text-yellow-600 mb-2">{winner.score} pontos</div>
-              <p className="text-gray-600 text-lg">Primeiro jogador a alcançar 50 pontos!</p>
+              <p className="text-gray-600 text-lg">Primeiro jogador a alcançar 100 pontos!</p>
             </div>
 
             <div className="space-y-4">
@@ -283,7 +290,7 @@ export default function Page() {
             <Button
               onClick={resetGame}
               size="lg"
-              className="mt-8 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-2xl text-lg font-semibold shadow-lg"
+              className="mt-8 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-full text-lg font-semibold shadow-md"
             >
               Jogar Novamente
             </Button>
@@ -313,7 +320,7 @@ export default function Page() {
             <CardTitle className="text-center text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               Escala de Pontuação
             </CardTitle>
-            <p className="text-center text-gray-600">Faça 50 pontos para vencer!</p>
+            <p className="text-center text-gray-600">Faça 100 pontos para vencer!</p>
           </CardHeader>
           <CardContent>
             <div className="flex rounded-2xl overflow-hidden h-20 mb-4 shadow-lg">
@@ -322,7 +329,7 @@ export default function Page() {
                   key={theme.name}
                   className={`${theme.color} flex-1 flex flex-col items-center justify-center text-white font-semibold`}
                 >
-                  <div className="text-sm font-bold">{theme.name}</div>
+                  <div className="text-sm font-bold text-center">{theme.name}</div>
                   <div className="text-xs opacity-90">
                     {theme.range[0]}-{theme.range[1]} pts
                   </div>
@@ -355,7 +362,7 @@ export default function Page() {
                       <div className="text-3xl font-bold">{player.score}</div>
                       <div className="text-sm opacity-90">pontos</div>
                       <div className="text-xs opacity-75">
-                        {50 - player.score > 0 ? `${50 - player.score} para vencer` : "Vencedor!"}
+                        {100 - player.score > 0 ? `${100 - player.score} para vencer` : "Vencedor!"}
                       </div>
                     </div>
                   </div>
@@ -390,9 +397,9 @@ export default function Page() {
                     📚 {getPlayerTheme(players[currentPlayerIndex]?.score || 0).name}
                   </Badge>
                 </div>
-                <p className="mb-6 text-xl text-gray-700">
+                {/* <p className="mb-6 text-xl text-gray-700">
                   Tema atual: <strong>{getPlayerTheme(players[currentPlayerIndex]?.score || 0).name}</strong>
-                </p>
+                </p> */}
                 <Button
                   onClick={drawQuestion}
                   size="lg"
@@ -435,7 +442,7 @@ export default function Page() {
                             ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-red-400"
                             : "hover:bg-gray-50 hover:border-indigo-300"
                         }`}
-                      onClick={() => !showAnswer && selectAnswer(index)}
+                      onClick={() => !showAnswer && selectAnswer(index, currentQuestion.id)}
                       disabled={showAnswer}
                     >
                       <span className="font-bold mr-3 text-xl">{String.fromCharCode(65 + index)})</span>
