@@ -12,7 +12,7 @@ import { IoReload } from "react-icons/io5";
 
 export default function Page() {
   // States===============================================
-  const [gameState, setGameState] = useState<"setup" | "order" | "playing">("playing")
+  const [gameState, setGameState] = useState<"setup" | "order" | "playing">("setup")
   const [players, setPlayers] = useState<Player[]>([])
   const [newPlayerName, setNewPlayerName] = useState("")
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0)
